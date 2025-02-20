@@ -5,7 +5,8 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   otp: { type: String },
-  verified: { type: Boolean, default: false }
+  verified: { type: Boolean, default: false },
+  role: { type: String, enum: ["user", "admin"], default: "user" } // Добавляем поле роли
 });
 
 module.exports = mongoose.model("User", UserSchema);

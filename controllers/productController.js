@@ -13,7 +13,7 @@ exports.getAllProducts = async (req, res) => {
 // Создание нового продукта
 exports.createProduct = async (req, res) => {
   const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, rating, reviews } = req.body;
-  const image = req.file ? req.file.path : "public/uploads/default-tire.jpg";
+  const image = req.file ? `/uploads/${req.file.filename}` : "public/uploads/default-tire.jpg";
 
   try {
     const newTire = new Tire({
@@ -37,5 +37,45 @@ exports.createProduct = async (req, res) => {
     res.status(201).json(newTire);
   } catch (err) {
     res.status(500).json({ message: "Error creating product" });
+  }
+};
+
+// Обновление продукта
+exports.updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, rating, reviews } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+  try {
+    const updatedProduct = await Tire.findByIdAndUpdate(
+      id,
+      { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, image, rating, reviews },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(500).json({ message: "Error updating product" });
+  }
+};
+
+// Удаление продукта
+exports.deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedProduct = await Tire.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting product" });
   }
 };

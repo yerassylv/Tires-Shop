@@ -36,6 +36,10 @@ app.get("/disks", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "disks.html"));
 });
 
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
+});
+
 // Маршрут для главной страницы
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
