@@ -20,6 +20,11 @@ if (registerForm) {
             const data = await res.json();
             message.textContent = data.message;
             message.className = res.ok ? "success" : "error";
+
+            if (res.ok) {
+                // Открыть модальное окно для ввода OTP
+                document.getElementById("otp-modal").style.display = "block";
+            }
         } catch (error) {
             message.textContent = "Error sending OTP.";
             message.className = "error";
@@ -34,7 +39,7 @@ if (otpForm) {
         event.preventDefault();
         const email = document.getElementById("otp-email").value;
         const otp = document.getElementById("otp").value;
-        const message = document.getElementById("message");
+        const message = document.getElementById("otp-message");
 
         try {
             const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
@@ -48,8 +53,13 @@ if (otpForm) {
             message.className = res.ok ? "success" : "error";
 
             if (res.ok) {
-                // ✅ Только после успешного ввода OTP перенаправляем на логин
+                // Вывод сообщения о правильности OTP
+                message.textContent = "OTP verified successfully!";
+                message.className = "success";
+
+                // Закрыть модальное окно и перенаправить на страницу логина
                 setTimeout(() => {
+                    document.getElementById("otp-modal").style.display = "none";
                     window.location.href = "/login";
                 }, 2000);
             }
@@ -131,4 +141,18 @@ if (logoutButton) {
 // Загрузка профиля при открытии страницы профиля
 if (window.location.pathname === "/profile") {
     loadProfile();
+}
+
+// Логика для открытия и закрытия модального окна
+const modal = document.getElementById("otp-modal");
+const span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
