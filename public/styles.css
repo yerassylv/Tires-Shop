@@ -241,3 +241,19 @@ button {
 .categories button:hover {
     background-color: #555;
 }
+
+/* Стили для фильтров */
+.filters {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filters label {
+    margin-right: 10px;
+}
+
+.filters select {
+    margin-right: 20px;
+    padding: 5px;
+}

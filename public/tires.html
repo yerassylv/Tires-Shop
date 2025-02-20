@@ -49,6 +49,24 @@
     </header>
     <main>
         <h2>Tires Catalog</h2>
+        <div class="filters">
+            <label for="brand">Brand:</label>
+            <select id="brand">
+                <option value="all">All</option>
+                <option value="michelin">Michelin</option>
+                <option value="bridgestone">Bridgestone</option>
+                <option value="goodyear">Goodyear</option>
+                <option value="pirelli">Pirelli</option>
+                <option value="continental">Continental</option>
+            </select>
+            <label for="season">Season:</label>
+            <select id="season">
+                <option value="all">All</option>
+                <option value="summer">Summer</option>
+                <option value="winter">Winter</option>
+                <option value="all-season">All Season</option>
+            </select>
+        </div>
         <div class="product-list" id="catalog">
             <!-- Товары будут загружены здесь -->
         </div>

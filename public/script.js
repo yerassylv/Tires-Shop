@@ -164,24 +164,44 @@ const loadCatalog = async () => {
         const products = await res.json();
         const catalog = document.getElementById("catalog");
 
-        products.forEach(product => {
-            const productElement = document.createElement("div");
-            productElement.className = "product";
-            productElement.innerHTML = `
-                <img src="${product.imageUrl}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p>${product.description}</p>
-                <p>${product.price} USD</p>
-                <button>Add to Cart</button>
-            `;
-            catalog.appendChild(productElement);
-        });
+        const brandFilter = document.getElementById("brand");
+        const seasonFilter = document.getElementById("season");
+
+        const filterProducts = () => {
+            const brand = brandFilter.value;
+            const season = seasonFilter.value;
+
+            const filteredProducts = products.filter(product => {
+                const matchesBrand = brand === "all" || product.name.toLowerCase().includes(brand);
+                const matchesSeason = season === "all" || product.description.toLowerCase().includes(season);
+                return matchesBrand && matchesSeason;
+            });
+
+            catalog.innerHTML = "";
+            filteredProducts.forEach(product => {
+                const productElement = document.createElement("div");
+                productElement.className = "product";
+                productElement.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p>${product.price} USD</p>
+                    <button>Add to Cart</button>
+                `;
+                catalog.appendChild(productElement);
+            });
+        };
+
+        brandFilter.addEventListener("change", filterProducts);
+        seasonFilter.addEventListener("change", filterProducts);
+
+        filterProducts();
     } catch (error) {
         console.error("Error loading catalog:", error);
     }
 }
 
-// Загрузка каталога при открытии главной страницы
-if (window.location.pathname === "/") {
+// Загрузка каталога при открытии страницы шин
+if (window.location.pathname === "/tires") {
     loadCatalog();
 }
