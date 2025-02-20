@@ -96,7 +96,7 @@ const loadProducts = async () => {
     } catch (error) {
         console.error("Error loading products:", error);
     }
-});
+};
 
 // Загрузка пользователей
 const loadUsers = async () => {
@@ -121,7 +121,7 @@ const loadUsers = async () => {
     } catch (error) {
         console.error("Error loading users:", error);
     }
-});
+};
 
 // Изменение роли пользователя
 const changeUserRole = async (id, newRole) => {

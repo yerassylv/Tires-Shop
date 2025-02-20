@@ -12,7 +12,7 @@ exports.getAllProducts = async (req, res) => {
 
 // Создание нового продукта
 exports.createProduct = async (req, res) => {
-  const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, rating, reviews } = req.body;
+  const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : "public/uploads/default-tire.jpg";
 
   try {
@@ -28,14 +28,13 @@ exports.createProduct = async (req, res) => {
       price,
       stock,
       description,
-      image,
-      rating,
-      reviews
+      image
     });
 
     await newTire.save();
     res.status(201).json(newTire);
   } catch (err) {
+    console.error("Error creating product:", err);
     res.status(500).json({ message: "Error creating product" });
   }
 };
@@ -43,13 +42,13 @@ exports.createProduct = async (req, res) => {
 // Обновление продукта
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, rating, reviews } = req.body;
+  const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : undefined;
 
   try {
     const updatedProduct = await Tire.findByIdAndUpdate(
       id,
-      { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, image, rating, reviews },
+      { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description, ...(image && { image }) },
       { new: true }
     );
 
