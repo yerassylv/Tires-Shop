@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000/auth";
+const API_BASE_URL = "http://localhost:3000";
 
 // **Функция для отправки OTP**
 const registerForm = document.getElementById("register-form");
@@ -11,7 +11,7 @@ if (registerForm) {
         const message = document.getElementById("message");
 
         try {
-            const res = await fetch(`${API_BASE_URL}/send-otp`, {
+            const res = await fetch(`${API_BASE_URL}/auth/send-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password })
@@ -37,7 +37,7 @@ if (otpForm) {
         const message = document.getElementById("message");
 
         try {
-            const res = await fetch(`${API_BASE_URL}/verify-otp`, {
+            const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otp })
@@ -70,7 +70,7 @@ if (loginForm) {
         const message = document.getElementById("message");
 
         try {
-            const res = await fetch(`${API_BASE_URL}/login`, {
+            const res = await fetch(`${API_BASE_URL}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
@@ -82,11 +82,53 @@ if (loginForm) {
 
             if (res.ok) {
                 localStorage.setItem("token", data.token);
-                setTimeout(() => window.location.href = "/dashboard", 2000);
+                setTimeout(() => window.location.href = "/profile", 2000);
             }
         } catch (error) {
             message.textContent = "Login failed.";
             message.className = "error";
         }
     });
+}
+
+// **Функция для загрузки профиля пользователя**
+const loadProfile = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "/login";
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            document.getElementById("profile-username").textContent = data.username;
+            document.getElementById("profile-email").textContent = data.email;
+        } else {
+            document.getElementById("message").textContent = data.message;
+            document.getElementById("message").className = "error";
+        }
+    } catch (error) {
+        document.getElementById("message").textContent = "Error loading profile.";
+        document.getElementById("message").className = "error";
+    }
+}
+
+// **Функция для выхода из системы**
+const logoutButton = document.getElementById("logout-button");
+if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    });
+}
+
+// Загрузка профиля при открытии страницы профиля
+if (window.location.pathname === "/profile") {
+    loadProfile();
 }

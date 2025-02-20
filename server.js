@@ -23,7 +23,15 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
 
-// Маршрут для главной страницы (если нужно)
+app.get("/catalog", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "catalog.html"));
+});
+
+app.get("/profile", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "profile.html"));
+});
+
+// Маршрут для главной страницы
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
