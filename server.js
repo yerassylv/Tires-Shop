@@ -13,6 +13,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/auth", require("./routes/authRoutes"));
+app.use("/products", require("./routes/productRoutes")); // Добавим маршрут для продуктов
 
 // Маршруты для HTML страниц
 app.get("/login", (req, res) => {
@@ -23,12 +24,16 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
 
-app.get("/catalog", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "catalog.html"));
-});
-
 app.get("/profile", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "profile.html"));
+});
+
+app.get("/tires", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "tires.html"));
+});
+
+app.get("/disks", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "disks.html"));
 });
 
 // Маршрут для главной страницы

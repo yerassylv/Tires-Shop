@@ -1,26 +1,105 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin-top: 50px;
+    margin: 0; /* Уберем верхний отступ */
+    background-color: white; /* Изменим фон на белый */
 }
 
 header {
-    background-color: #333;
+    background-color: white; /* Изменим фон на белый */
     padding: 10px 0;
+    border-bottom: 1px solid #ddd; /* Добавим линию между контейнерами */
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Уменьшим отступы */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 20px;
+}
+
+.logo-container h1 {
+    color: black;
+    margin: 0;
+    font-size: 24px; /* Уменьшим размер текста */
+}
+
+.city-selector {
+    margin-left: 20px;
+}
+
+.city-selector label {
+    margin-right: 10px;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.search-container input {
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.phone-icon {
+    height: 20px;
+    margin-right: 5px;
+}
+
+.contact-info p {
+    margin: 0;
+    color: black; /* Сделаем текст черным */
+}
+
+.header-bottom {
+    padding: 10px 0;
+    border-top: 1px solid #ddd; /* Добавим линию между контейнерами */
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
 nav ul li {
-    display: inline;
     margin: 0 15px;
 }
 
 nav ul li a {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
@@ -96,4 +175,69 @@ button {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Стили для каталога товаров */
+.catalog {
+    margin: 50px 0;
+}
+
+.product-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.product {
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+    text-align: left;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+}
+
+.product h3 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.product p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.product button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.product button:hover {
+    background-color: #555;
+}
+
+/* Стили для кнопок категорий */
+.categories {
+    margin: 50px 0;
+}
+
+.categories button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.categories button:hover {
+    background-color: #555;
 }

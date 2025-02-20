@@ -156,3 +156,32 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+// **Функция для загрузки товаров в каталог**
+const loadCatalog = async () => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/products`);
+        const products = await res.json();
+        const catalog = document.getElementById("catalog");
+
+        products.forEach(product => {
+            const productElement = document.createElement("div");
+            productElement.className = "product";
+            productElement.innerHTML = `
+                <img src="${product.imageUrl}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>${product.price} USD</p>
+                <button>Add to Cart</button>
+            `;
+            catalog.appendChild(productElement);
+        });
+    } catch (error) {
+        console.error("Error loading catalog:", error);
+    }
+}
+
+// Загрузка каталога при открытии главной страницы
+if (window.location.pathname === "/") {
+    loadCatalog();
+}
