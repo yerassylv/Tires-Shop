@@ -2,7 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+const session = require("express-session");
 const connectDB = require("./config/db");
+const { isAdmin } = require("./middleware/adminMiddleware");
 
 dotenv.config();
 connectDB();
@@ -12,8 +14,16 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Установите secure: true, если используете HTTPS
+}));
+
 app.use("/auth", require("./routes/authRoutes"));
-app.use("/products", require("./routes/productRoutes")); // Добавим маршрут для продуктов
+app.use("/products", require("./routes/productRoutes"));
+app.use("/admin", require("./routes/adminRoutes"));
 
 // Маршруты для HTML страниц
 app.get("/login", (req, res) => {
@@ -36,7 +46,7 @@ app.get("/disks", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "disks.html"));
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin", isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 

@@ -1,39 +1,79 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const Product = require("./models/Product");
+const Tire = require("./models/Tire"); // Исправлено на Tire
 
 dotenv.config();
 
 const products = [
   {
-    name: "Michelin Pilot Sport 4",
-    description: "High-performance summer tire",
+    brand: "Michelin",
+    model: "Pilot Sport 4",
+    size: "225/45R17",
+    season: "summer",
+    loadIndex: 91,
+    speedIndex: "Y",
+    vehicleType: "passenger",
+    studded: false,
     price: 200,
-    imageUrl: "https://example.com/michelin-pilot-sport-4.jpg"
+    stock: 10,
+    description: "High-performance summer tire",
+    image: "https://example.com/michelin-pilot-sport-4.jpg"
   },
   {
-    name: "Bridgestone Blizzak WS90",
-    description: "Winter tire with excellent grip on snow and ice",
+    brand: "Bridgestone",
+    model: "Blizzak WS90",
+    size: "205/55R16",
+    season: "winter",
+    loadIndex: 91,
+    speedIndex: "H",
+    vehicleType: "passenger",
+    studded: false,
     price: 180,
-    imageUrl: "https://example.com/bridgestone-blizzak-ws90.jpg"
+    stock: 15,
+    description: "Winter tire with excellent grip on snow and ice",
+    image: "https://example.com/bridgestone-blizzak-ws90.jpg"
   },
   {
-    name: "Goodyear Eagle F1 Asymmetric 5",
-    description: "Ultra-high-performance summer tire",
+    brand: "Goodyear",
+    model: "Eagle F1 Asymmetric 5",
+    size: "245/40R18",
+    season: "summer",
+    loadIndex: 97,
+    speedIndex: "Y",
+    vehicleType: "passenger",
+    studded: false,
     price: 220,
-    imageUrl: "https://example.com/goodyear-eagle-f1.jpg"
+    stock: 8,
+    description: "Ultra-high-performance summer tire",
+    image: "https://example.com/goodyear-eagle-f1.jpg"
   },
   {
-    name: "Pirelli P Zero",
-    description: "High-performance summer tire for sports cars",
+    brand: "Pirelli",
+    model: "P Zero",
+    size: "235/35R19",
+    season: "summer",
+    loadIndex: 91,
+    speedIndex: "Y",
+    vehicleType: "passenger",
+    studded: false,
     price: 250,
-    imageUrl: "https://example.com/pirelli-p-zero.jpg"
+    stock: 12,
+    description: "High-performance summer tire for sports cars",
+    image: "https://example.com/pirelli-p-zero.jpg"
   },
   {
-    name: "Continental WinterContact TS 860",
-    description: "Winter tire with excellent handling on wet and snowy roads",
+    brand: "Continental",
+    model: "WinterContact TS 860",
+    size: "195/65R15",
+    season: "winter",
+    loadIndex: 91,
+    speedIndex: "T",
+    vehicleType: "passenger",
+    studded: false,
     price: 190,
-    imageUrl: "https://example.com/continental-wintercontact.jpg"
+    stock: 20,
+    description: "Winter tire with excellent handling on wet and snowy roads",
+    image: "https://example.com/continental-wintercontact.jpg"
   }
 ];
 
@@ -45,10 +85,10 @@ const seedDB = async () => {
     });
     console.log("✅ Connected to MongoDB");
 
-    await Product.deleteMany({});
+    await Tire.deleteMany({});
     console.log("🗑️ Deleted existing products");
 
-    await Product.insertMany(products);
+    await Tire.insertMany(products);
     console.log("🌱 Seeded database with products");
 
     mongoose.connection.close();
