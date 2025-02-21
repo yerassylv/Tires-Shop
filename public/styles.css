@@ -117,7 +117,8 @@ input {
     display: block;
     margin: 10px 0;
     padding: 8px;
-    width: 250px;
+    width: 100%; /* Уменьшаем ширину полей ввода */
+    box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
 button {
@@ -189,7 +190,7 @@ button {
     justify-content: flex-start;
     flex-wrap: wrap;
     width: 70%; /* Оставляем место для фильтра */
-    margin-left: 27%; /* Оставляем место для фильтра */
+    margin-left: 10px; /* Уменьшаем отступ */
 }
 
 .product {
@@ -323,4 +324,66 @@ button {
 
 .remove-btn:hover {
     background-color: #c9302c;
+}
+
+.container {
+    display: flex;
+}
+
+#filter-panel {
+    width: 200px; /* Уменьшаем ширину фильтра */
+    padding: 10px; /* Уменьшаем отступы */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    height: fit-content;
+}
+
+.filter-section {
+    margin-bottom: 10px; /* Уменьшаем отступы */
+}
+
+.filter-section h3 {
+    margin-bottom: 5px; /* Уменьшаем отступы */
+}
+
+.filter-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.filter-section input {
+    width: 100px; /* Уменьшаем ширину полей ввода */
+    padding: 5px; /* Уменьшаем padding */
+    margin-bottom: 5px; /* Уменьшаем отступы */
+}
+
+.filter-section input[type="number"] {
+    width: 80px; /* Уменьшаем ширину числовых полей ввода */
+}
+
+.filter-section input[type="checkbox"],
+.filter-section input[type="radio"] {
+    width: auto; /* Оставляем ширину по умолчанию для чекбоксов и радиокнопок */
+}
+
+.filter-section button {
+    width: 100%;
+    padding: 8px; /* Уменьшаем padding */
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-section button:hover {
+    background-color: #555;
+}
+
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
 }

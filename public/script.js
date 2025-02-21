@@ -154,10 +154,25 @@ window.onclick = function(event) {
     }
 }
 
-const loadProducts = async (page = 1) => {
+const filterForm = document.getElementById('filter-form');
+if (filterForm) {
+    filterForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Останавливаем перезагрузку страницы
+
+        const formData = new FormData(event.target);
+        let query = [];
+
+        formData.forEach((value, key) => {
+            query.push(`${key}=${encodeURIComponent(value)}`);
+        });
+
+        loadProducts(1, query.join("&")); // Загружаем продукты с учётом фильтров
+    });
+}
+const loadProducts = async (page = 1, filters = "") => {
     try {
         console.log("Fetching products...");
-        const res = await fetch(`${API_BASE_URL}/products?page=${page}&limit=10`);
+        const res = await fetch(`${API_BASE_URL}/products?page=${page}&limit=10&${filters}`);
         const data = await res.json();
         const { products, total, pages } = data;
         console.log("Products fetched:", products);
@@ -193,7 +208,7 @@ const loadProducts = async (page = 1) => {
             const pageElement = document.createElement("button");
             pageElement.textContent = i;
             pageElement.className = i === page ? "active" : "";
-            pageElement.onclick = () => loadProducts(i);
+            pageElement.onclick = () => loadProducts(i, filters); // ✅ Передаём фильтры при смене страницы
             pagination.appendChild(pageElement);
         }
     } catch (error) {
@@ -204,8 +219,9 @@ const loadProducts = async (page = 1) => {
 
 // Загрузка продуктов при открытии страницы шин
 if (window.location.pathname === "/tires") {
-    loadProducts();
+    loadProducts(); // ✅ Без фильтров при загрузке
 }
+
 // **Функция для добавления товара в корзину**
 const addToCart = async (productId) => {
     try {

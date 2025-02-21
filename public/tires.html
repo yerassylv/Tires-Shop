@@ -49,8 +49,47 @@
     </header>
     <main>
         <h2>Passenger Tires in Almaty - Buy Tires at TireX Online Store</h2>
-        <div class="product-list" id="catalog">
-            <!-- Products will be loaded here -->
+        <div class="container">
+            <aside id="filter-panel">
+                <form id="filter-form">
+                    <!-- Фильтр по бренду -->
+                    <div class="filter-section">
+                        <h3>Бренд</h3>
+                        <label><input type="checkbox" name="brand" value="Continental"> Continental</label>
+                        <label><input type="checkbox" name="brand" value="Bridgestone"> Bridgestone</label>
+                        <label><input type="checkbox" name="brand" value="Michelin"> Michelin</label>
+                        <label><input type="checkbox" name="brand" value="Yokohama"> Yokohama</label>
+                    </div>
+
+                    <!-- Фильтр по размеру -->
+                    <div class="filter-section">
+                        <h3>Размер</h3>
+                        <label>Ширина: <input type="number" name="width" min="100" max="500"></label>
+                        <label>Профиль: <input type="number" name="profile" min="30" max="100"></label>
+                        <label>Диаметр: <input type="number" name="diameter" min="13" max="22"></label>
+                    </div>
+
+                    <!-- Фильтр по сезонности -->
+                    <div class="filter-section">
+                        <h3>Сезонность</h3>
+                        <label><input type="radio" name="season" value="summer"> Летние</label>
+                        <label><input type="radio" name="season" value="winter"> Зимние</label>
+                        <label><input type="radio" name="season" value="all-season"> Всесезонные</label>
+                    </div>
+
+                    <!-- Фильтр по цене -->
+                    <div class="filter-section">
+                        <h3>Цена</h3>
+                        <label>От: <input type="number" name="price_min" min="0"></label>
+                        <label>До: <input type="number" name="price_max" min="0"></label>
+                    </div>
+
+                    <button type="submit">Применить фильтры</button>
+                </form>
+            </aside>
+            <div class="product-list" id="catalog">
+                <!-- Products will be loaded here -->
+            </div>
         </div>
         <div id="pagination" class="pagination">
             <!-- Pagination buttons will be loaded here -->
