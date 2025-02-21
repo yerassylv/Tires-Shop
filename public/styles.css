@@ -11,7 +11,13 @@ body {
 
 main {
     flex: 1;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Градиентный фон */
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 footer {
     background-color: #f1f1f1;
@@ -420,4 +426,103 @@ footer {
     position: relative;
     bottom: 0;
     width: 100%;
+}
+
+
+/* Заголовок */
+main h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Описание */
+main p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Кнопки категорий */
+.categories {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.categories button {
+    background-color: #1d1e1f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.categories button:hover {
+    background-color: #444648;
+}
+
+/* Секция преимуществ */
+.benefits {
+    margin-top: 40px;
+}
+
+.benefits h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.benefits ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 18px;
+    color: #666;
+}
+
+.benefits ul li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.benefits ul li::before {
+    content: "✔";
+    color: #3e3f40;
+    position: absolute;
+    left: 430px;
+}
+
+/* Призыв к действию */
+.call-to-action {
+    margin-top: 40px;
+}
+
+.call-to-action h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.call-to-action p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.call-to-action button {
+    background-color: #313332;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.call-to-action button:hover {
+    background-color: #252728;
 }
