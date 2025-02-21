@@ -1,8 +1,32 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    margin-top: auto;
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 0;
     background-color: white;
+    height: 100%;
 }
 
 header {
@@ -386,4 +410,14 @@ button {
 
 button:hover {
     background-color: #555;
+}
+
+/* Футер */
+footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
