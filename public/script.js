@@ -209,7 +209,7 @@ if (window.location.pathname === "/tires") {
 // **Функция для добавления товара в корзину**
 const addToCart = async (productId) => {
     try {
-        const res = await fetch(`${API_BASE_URL}/cart`, {
+        const res = await fetch("/cart/api", { // ✅ Теперь отправляем на /cart/api, а не /cart
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ productId })
@@ -225,16 +225,15 @@ const addToCart = async (productId) => {
         console.error("Error adding to cart:", error);
     }
 };
+
   
 const loadCart = async () => {
     try {
-        console.log("Loading cart..."); // Отладочное сообщение
-        const res = await fetch("/cart/api", { // ✅ Запрос идёт в API, а не в HTML-страницу
-            method: "GET"
-        });
+        console.log("Loading cart...");
+        const res = await fetch("/cart/api", { method: "GET" });
 
-        const data = await res.json(); 
-        console.log("Cart data:", data); // Отладочное сообщение
+        const data = await res.json();
+        console.log("Cart data:", data);
 
         if (res.ok) {
             const cartList = document.getElementById("cart-list");
@@ -243,17 +242,17 @@ const loadCart = async () => {
             let total = 0;
             data.items.forEach(item => {
                 const productElement = document.createElement("div");
-                productElement.className = "cart-item";
+                productElement.className = "product"; // Используем стили как на /tires
                 productElement.innerHTML = `
                     <img src="${item.product.image}" alt="${item.product.model}">
                     <h3>${item.product.model}</h3>
-                    <p>Brand: ${item.product.brand}</p>
-                    <p>Size: ${item.product.size}</p>
-                    <p>Season: ${item.product.season}</p>
-                    <p>Vehicle Type: ${item.product.vehicleType}</p>
-                    <p>Quantity: ${item.quantity}</p>
-                    <p>Price: ${item.product.price} USD</p>
-                    <button onclick="removeFromCart('${item.product._id}')">Remove</button>
+                    <p><strong>Brand:</strong> ${item.product.brand}</p>
+                    <p><strong>Size:</strong> ${item.product.size}</p>
+                    <p><strong>Season:</strong> ${item.product.season}</p>
+                    <p><strong>Vehicle Type:</strong> ${item.product.vehicleType}</p>
+                    <p><strong>Quantity:</strong> ${item.quantity}</p>
+                    <p><strong>Price:</strong> ${item.product.price} USD</p>
+                    <button class="remove-btn" onclick="removeFromCart('${item.product._id}')">Remove</button>
                 `;
                 cartList.appendChild(productElement);
                 total += item.product.price * item.quantity;
@@ -270,6 +269,30 @@ const loadCart = async () => {
         document.getElementById("message").className = "error";
     }
 };
+
+// Функция удаления товара из корзины
+const removeFromCart = async (productId) => {
+    try {
+        const res = await fetch(`/cart/api/${productId}`, {
+            method: "DELETE"
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            alert("Product removed from cart!");
+            loadCart(); // Перезагружаем корзину
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error removing from cart:", error);
+    }
+};
+
+// Загружаем корзину при открытии страницы
+if (window.location.pathname === "/cart") {
+    loadCart();
+}
 
 // Загрузка корзины при открытии страницы корзины
 if (window.location.pathname === "/cart") {

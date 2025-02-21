@@ -41,22 +41,24 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-// Удаление товара из корзины
+
 exports.removeFromCart = async (req, res) => {
-  const { productId } = req.params;
-
   try {
-    const cart = await Cart.findOne({ user: req.session.userId });
+      const { productId } = req.params;
+      const userId = req.session.userId;
 
-    if (!cart) {
-      return res.status(404).json({ message: "Cart not found" });
-    }
+      let cart = await Cart.findOne({ user: userId });
+      if (!cart) {
+          return res.status(404).json({ message: "Cart not found" });
+      }
 
-    cart.items = cart.items.filter(item => item.product.toString() !== productId);
+      // Фильтруем товары, оставляя только те, которые не совпадают с удаляемым
+      cart.items = cart.items.filter(item => item.product.toString() !== productId);
 
-    await cart.save();
-    res.status(200).json(cart);
-  } catch (err) {
-    res.status(500).json({ message: "Error removing from cart" });
+      await cart.save();
+      res.json({ message: "Product removed from cart", cart });
+  } catch (error) {
+      console.error("Error removing from cart:", error);
+      res.status(500).json({ message: "Server error" });
   }
 };
