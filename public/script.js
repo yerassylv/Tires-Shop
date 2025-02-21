@@ -382,3 +382,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// Обработчик события для поля поиска
+const searchInput = document.querySelector('.search-container input');
+const searchButton = document.querySelector('.search-container button');
+
+if (searchInput && searchButton) {
+    searchButton.addEventListener('click', () => {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm) {
+            loadProducts(1, `search=${encodeURIComponent(searchTerm)}`);
+        }
+    });
+
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                loadProducts(1, `search=${encodeURIComponent(searchTerm)}`);
+            }
+        }
+    });
+}

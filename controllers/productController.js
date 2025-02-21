@@ -2,7 +2,7 @@ const Tire = require("../models/Tire");
 
 // Получение всех продуктов с фильтрацией и пагинацией
 exports.getAllProducts = async (req, res) => {
-  const { brand, width, profile, diameter, season, price_min, price_max, page = 1, limit = 10 } = req.query;
+  const { brand, width, profile, diameter, season, price_min, price_max, search, page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
 
   let filter = {};
@@ -16,6 +16,14 @@ exports.getAllProducts = async (req, res) => {
     filter.price = {};
     if (price_min) filter.price.$gte = parseInt(price_min);
     if (price_max) filter.price.$lte = parseInt(price_max);
+  }
+  if (search) {
+    filter.$or = [
+      { brand: new RegExp(search, "i") },
+      { model: new RegExp(search, "i") },
+      { size: new RegExp(search, "i") },
+      { description: new RegExp(search, "i") }
+    ];
   }
 
   try {
@@ -34,7 +42,6 @@ exports.getAllProducts = async (req, res) => {
     res.status(500).json({ message: "Error fetching products" });
   }
 };
-
 // Создание нового продукта
 exports.createProduct = async (req, res) => {
   const { brand, model, size, season, loadIndex, speedIndex, vehicleType, studded, price, stock, description } = req.body;
