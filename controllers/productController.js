@@ -1,12 +1,14 @@
 const Tire = require("../models/Tire");
 
-
 // Получение всех продуктов
 exports.getAllProducts = async (req, res) => {
   try {
+    console.log("Fetching products from database...");
     const products = await Tire.find();
+    console.log("Products fetched:", products);
     res.status(200).json(products);
   } catch (err) {
+    console.error("Error fetching products:", err);
     res.status(500).json({ message: "Error fetching products" });
   }
 };
@@ -59,6 +61,7 @@ exports.updateProduct = async (req, res) => {
 
     res.status(200).json(updatedProduct);
   } catch (err) {
+    console.error("Error updating product:", err);
     res.status(500).json({ message: "Error updating product" });
   }
 };
@@ -76,6 +79,7 @@ exports.deleteProduct = async (req, res) => {
 
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (err) {
+    console.error("Error deleting product:", err);
     res.status(500).json({ message: "Error deleting product" });
   }
 };

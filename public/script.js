@@ -156,10 +156,13 @@ window.onclick = function(event) {
     }
 }
 
+
 const loadProducts = async () => {
     try {
+        console.log("Fetching products...");
         const res = await fetch(`${API_BASE_URL}/products`);
         const products = await res.json();
+        console.log("Products fetched:", products);
         const catalog = document.getElementById("catalog");
 
         catalog.innerHTML = ""; // Очистка каталога перед добавлением новых продуктов
