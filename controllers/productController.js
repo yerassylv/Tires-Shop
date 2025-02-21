@@ -1,12 +1,22 @@
 const Tire = require("../models/Tire");
 
-// Получение всех продуктов
+// Получение всех продуктов с пагинацией
 exports.getAllProducts = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
   try {
     console.log("Fetching products from database...");
-    const products = await Tire.find();
+    const products = await Tire.find().skip(skip).limit(limit);
+    const total = await Tire.countDocuments();
     console.log("Products fetched:", products);
-    res.status(200).json(products);
+    res.status(200).json({
+      products,
+      total,
+      page,
+      pages: Math.ceil(total / limit)
+    });
   } catch (err) {
     console.error("Error fetching products:", err);
     res.status(500).json({ message: "Error fetching products" });

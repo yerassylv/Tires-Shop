@@ -146,9 +146,7 @@ if (window.location.pathname === "/profile") {
 const modal = document.getElementById("otp-modal");
 const span = document.getElementsByClassName("close")[0];
 
-span.onclick = function() {
-    modal.style.display = "none";
-}
+
 
 window.onclick = function(event) {
     if (event.target == modal) {
@@ -156,12 +154,12 @@ window.onclick = function(event) {
     }
 }
 
-
-const loadProducts = async () => {
+const loadProducts = async (page = 1) => {
     try {
         console.log("Fetching products...");
-        const res = await fetch(`${API_BASE_URL}/products`);
-        const products = await res.json();
+        const res = await fetch(`${API_BASE_URL}/products?page=${page}&limit=10`);
+        const data = await res.json();
+        const { products, total, pages } = data;
         console.log("Products fetched:", products);
         const catalog = document.getElementById("catalog");
 
@@ -174,14 +172,29 @@ const loadProducts = async () => {
                 productElement.innerHTML = `
                     <img src="${product.image}" alt="${product.model}">
                     <h3>${product.model}</h3>
+                    <p>Size: ${product.size}</p>
+                    <p>In Stock: ${product.stock}</p>
                     <p>${product.description}</p>
                     <p>${product.price} USD</p>
                     <button>Add to Cart</button>
+                    <button>Add to Favorites</button>
                 `;
                 catalog.appendChild(productElement);
             });
         } else {
             document.getElementById("message").textContent = "No products found.";
+        }
+
+        // Добавление элементов пагинации
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= pages; i++) {
+            const pageElement = document.createElement("button");
+            pageElement.textContent = i;
+            pageElement.className = i === page ? "active" : "";
+            pageElement.onclick = () => loadProducts(i);
+            pagination.appendChild(pageElement);
         }
     } catch (error) {
         console.error("Error loading products:", error);
