@@ -48,27 +48,42 @@
         </div>
     </header>
     <main>
-        <h2>Tires Catalog</h2>
+        <h2>Passenger Tires in Almaty - Buy Tires at TireX Online Store</h2>
         <div class="filters">
-            <label for="brand">Brand:</label>
-            <select id="brand">
-                <option value="all">All</option>
-                <option value="michelin">Michelin</option>
-                <option value="bridgestone">Bridgestone</option>
-                <option value="goodyear">Goodyear</option>
-                <option value="pirelli">Pirelli</option>
-                <option value="continental">Continental</option>
-            </select>
-            <label for="season">Season:</label>
-            <select id="season">
-                <option value="all">All</option>
-                <option value="summer">Summer</option>
-                <option value="winter">Winter</option>
-                <option value="all-season">All Season</option>
-            </select>
+            <h3>Filter by Parameters</h3>
+            <div class="filter-group">
+                <label for="width">Width:</label>
+                <select id="width">
+                    <option value="all">All</option>
+                    <!-- Add options dynamically -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="height">Height:</label>
+                <select id="height">
+                    <option value="all">All</option>
+                    <!-- Add options dynamically -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="diameter">Diameter:</label>
+                <select id="diameter">
+                    <option value="all">All</option>
+                    <!-- Add options dynamically -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="season">Season:</label>
+                <select id="season">
+                    <option value="all">All</option>
+                    <option value="summer">Summer</option>
+                    <option value="winter">Winter</option>
+                    <option value="all-season">All Season</option>
+                </select>
+            </div>
         </div>
         <div class="product-list" id="catalog">
-            <!-- Товары будут загружены здесь -->
+            <!-- Products will be loaded here -->
         </div>
         <p id="message"></p>
     </main>
