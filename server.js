@@ -57,6 +57,7 @@ app.get("/cart", (req, res) => {
 
 // Подключаем API-контроллер корзины
 app.use("/cart", require("./routes/cartRoutes"));
+app.use("/orders", require("./routes/orderRoutes"));
 
 // Маршрут для главной страницы
 app.get("/", (req, res) => {

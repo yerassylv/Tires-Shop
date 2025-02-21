@@ -314,3 +314,71 @@ if (window.location.pathname === "/cart") {
 if (window.location.pathname === "/cart") {
     loadCart();
 }
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("checkout-modal");
+    const checkoutButton = document.getElementById("checkout-button");
+    const closeModal = document.querySelector(".close");
+    const checkoutForm = document.getElementById("checkout-form");
+    const deliverySelect = document.getElementById("checkout-delivery");
+    const addressField = document.getElementById("address-field");
+
+    // Открытие модального окна
+    checkoutButton.addEventListener("click", () => {
+        modal.style.display = "block";
+    });
+
+    // Закрытие модального окна
+    closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // Закрытие модального окна при клике вне его
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // Показать поле "Адрес", если выбрана доставка курьером
+    deliverySelect.addEventListener("change", () => {
+        if (deliverySelect.value === "courier") {
+            addressField.style.display = "block";
+        } else {
+            addressField.style.display = "none";
+        }
+    });
+
+    // Отправка данных на сервер
+    checkoutForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById("checkout-name").value;
+        const email = document.getElementById("checkout-email").value;
+        const phone = document.getElementById("checkout-phone").value;
+        const deliveryMethod = document.getElementById("checkout-delivery").value;
+        const address = deliveryMethod === "courier" ? document.getElementById("checkout-address").value : null;
+        const messageElement = document.getElementById("checkout-message");
+
+        try {
+            const response = await fetch("/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, phone, deliveryMethod, address })
+            });
+
+            const data = await response.json();
+            messageElement.textContent = data.message;
+            messageElement.className = response.ok ? "success" : "error";
+
+            if (response.ok) {
+                setTimeout(() => {
+                    modal.style.display = "none";
+                    window.location.reload(); // Обновить страницу после успешного заказа
+                }, 2000);
+            }
+        } catch (error) {
+            messageElement.textContent = "Ошибка при оформлении заказа.";
+            messageElement.className = "error";
+        }
+    });
+});

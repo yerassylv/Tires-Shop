@@ -58,6 +58,37 @@
             <!-- Товары в корзине будут загружены здесь -->
         </div>
         <p id="message"></p>
+        <!-- Модальное окно оформления заказа -->
+<div id="checkout-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Оформление заказа</h2>
+        <form id="checkout-form">
+            <label>Имя</label>
+            <input type="text" id="checkout-name" required>
+
+            <label>Email</label>
+            <input type="email" id="checkout-email" required>
+
+            <label>Телефон</label>
+            <input type="tel" id="checkout-phone" required>
+
+            <label>Способ доставки</label>
+            <select id="checkout-delivery">
+                <option value="pickup">Самовывоз</option>
+                <option value="courier">Курьерская доставка</option>
+            </select>
+
+            <div id="address-field" style="display: none;">
+                <label>Адрес</label>
+                <input type="text" id="checkout-address">
+            </div>
+
+            <button type="submit">Подтвердить заказ</button>
+        </form>
+        <p id="checkout-message"></p>
+    </div>
+</div>
     </main>
 </body>
 </html>
