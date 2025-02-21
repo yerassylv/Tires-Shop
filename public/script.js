@@ -226,15 +226,14 @@ const addToCart = async (productId) => {
     }
 };
   
-// **Функция для загрузки корзины**
 const loadCart = async () => {
     try {
         console.log("Loading cart..."); // Отладочное сообщение
-        const res = await fetch(`${API_BASE_URL}/cart`, {
+        const res = await fetch("/cart/api", { // ✅ Запрос идёт в API, а не в HTML-страницу
             method: "GET"
         });
 
-        const data = await res.json();
+        const data = await res.json(); 
         console.log("Cart data:", data); // Отладочное сообщение
 
         if (res.ok) {

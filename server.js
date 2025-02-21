@@ -24,7 +24,7 @@ app.use(session({
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/products", require("./routes/productRoutes"));
 app.use("/admin", require("./routes/adminRoutes"));
-app.use("/cart", require("./routes/cartRoutes"));
+
 
 // Маршруты для HTML страниц
 app.get("/login", (req, res) => {
@@ -50,9 +50,14 @@ app.get("/disks", (req, res) => {
 app.get("/admin", isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
+// Отдаём HTML-страницу корзины перед API
 app.get("/cart", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "cart.html"));
 });
+
+// Подключаем API-контроллер корзины
+app.use("/cart", require("./routes/cartRoutes"));
+
 // Маршрут для главной страницы
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));

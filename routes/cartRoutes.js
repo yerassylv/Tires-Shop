@@ -4,8 +4,8 @@ const { authenticateSession } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", authenticateSession, getCart);
-router.post("/", authenticateSession, addToCart);
-router.delete("/:productId", authenticateSession, removeFromCart);
+router.get("/api", authenticateSession, getCart); // ✅ Теперь API доступен по /cart/api
+router.post("/api", authenticateSession, addToCart);
+router.delete("/api/:productId", authenticateSession, removeFromCart);
 
 module.exports = router;
