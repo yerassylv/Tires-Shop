@@ -24,6 +24,7 @@ app.use(session({
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/products", require("./routes/productRoutes"));
 app.use("/admin", require("./routes/adminRoutes"));
+app.use("/cart", require("./routes/cartRoutes"));
 
 // Маршруты для HTML страниц
 app.get("/login", (req, res) => {

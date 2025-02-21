@@ -86,26 +86,26 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+      const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ message: "Account not registered" });
-    }
+      if (!user) {
+          return res.status(400).json({ message: "Account not registered" });
+      }
 
-    if (!user.verified) {
-      return res.status(400).json({ message: "User not verified" });
-    }
+      if (!user.verified) {
+          return res.status(400).json({ message: "User not verified" });
+      }
 
-    if (!(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ message: "Incorrect login or password" });
-    }
+      if (!(await bcrypt.compare(password, user.password))) {
+          return res.status(400).json({ message: "Incorrect login or password" });
+      }
 
-    req.session.userId = user._id; // Сохраняем идентификатор пользователя в сессии
+      req.session.userId = user._id; // Сохраняем идентификатор пользователя в сессии
 
-    res.status(200).json({ message: "Login successful" });
+      res.status(200).json({ message: "Login successful" });
   } catch (err) {
-    console.error("Error logging in:", err);
-    res.status(500).json({ message: "Error logging in" });
+      console.error("Error logging in:", err);
+      res.status(500).json({ message: "Error logging in" });
   }
 };
 

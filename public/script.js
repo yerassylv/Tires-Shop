@@ -176,7 +176,7 @@ const loadProducts = async (page = 1) => {
                     <p>In Stock: ${product.stock}</p>
                     <p>${product.description}</p>
                     <p>${product.price} USD</p>
-                    <button>Add to Cart</button>
+                    <button onclick="addToCart('${product._id}')">Add to Cart</button>
                     <button>Add to Favorites</button>
                 `;
                 catalog.appendChild(productElement);
@@ -206,3 +206,82 @@ const loadProducts = async (page = 1) => {
 if (window.location.pathname === "/tires") {
     loadProducts();
 }
+// **Функция для добавления товара в корзину**
+const addToCart = async (productId) => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/cart`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            alert("Product added to cart successfully!");
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error adding to cart:", error);
+    }
+};
+  
+  // **Функция для загрузки корзины**
+  const loadCart = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/cart`, {
+        method: "GET"
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        const cartList = document.getElementById("cart-list");
+        cartList.innerHTML = "";
+  
+        let total = 0;
+        data.items.forEach(item => {
+          const productElement = document.createElement("div");
+          productElement.className = "cart-item";
+          productElement.innerHTML = `
+            <img src="${item.product.image}" alt="${item.product.model}">
+            <h3>${item.product.model}</h3>
+            <p>Quantity: ${item.quantity}</p>
+            <p>Price: ${item.product.price} USD</p>
+            <button onclick="removeFromCart('${item.product._id}')">Remove</button>
+          `;
+          cartList.appendChild(productElement);
+          total += item.product.price * item.quantity;
+        });
+  
+        document.getElementById("total-price").textContent = `Total: ${total} USD`;
+      } else {
+        document.getElementById("message").textContent = data.message;
+        document.getElementById("message").className = "error";
+      }
+    } catch (error) {
+      document.getElementById("message").textContent = "Error loading cart.";
+      document.getElementById("message").className = "error";
+    }
+  };
+  
+  // **Функция для удаления товара из корзины**
+  const removeFromCart = async (productId) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/cart/${productId}`, {
+        method: "DELETE"
+      });
+  
+      if (res.ok) {
+        loadCart();
+      } else {
+        console.error("Error removing from cart");
+      }
+    } catch (error) {
+      console.error("Error removing from cart:", error);
+    }
+  };
+  
+  // Загрузка корзины при открытии страницы корзины
+  if (window.location.pathname === "/cart") {
+    loadCart();
+  }
