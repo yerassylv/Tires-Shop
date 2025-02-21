@@ -50,7 +50,9 @@ app.get("/disks", (req, res) => {
 app.get("/admin", isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
-
+app.get("/cart", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "cart.html"));
+});
 // Маршрут для главной страницы
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));

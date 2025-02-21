@@ -226,62 +226,53 @@ const addToCart = async (productId) => {
     }
 };
   
-  // **Функция для загрузки корзины**
-  const loadCart = async () => {
+// **Функция для загрузки корзины**
+const loadCart = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/cart`, {
-        method: "GET"
-      });
-  
-      const data = await res.json();
-      if (res.ok) {
-        const cartList = document.getElementById("cart-list");
-        cartList.innerHTML = "";
-  
-        let total = 0;
-        data.items.forEach(item => {
-          const productElement = document.createElement("div");
-          productElement.className = "cart-item";
-          productElement.innerHTML = `
-            <img src="${item.product.image}" alt="${item.product.model}">
-            <h3>${item.product.model}</h3>
-            <p>Quantity: ${item.quantity}</p>
-            <p>Price: ${item.product.price} USD</p>
-            <button onclick="removeFromCart('${item.product._id}')">Remove</button>
-          `;
-          cartList.appendChild(productElement);
-          total += item.product.price * item.quantity;
+        console.log("Loading cart..."); // Отладочное сообщение
+        const res = await fetch(`${API_BASE_URL}/cart`, {
+            method: "GET"
         });
-  
-        document.getElementById("total-price").textContent = `Total: ${total} USD`;
-      } else {
-        document.getElementById("message").textContent = data.message;
+
+        const data = await res.json();
+        console.log("Cart data:", data); // Отладочное сообщение
+
+        if (res.ok) {
+            const cartList = document.getElementById("cart-list");
+            cartList.innerHTML = "";
+
+            let total = 0;
+            data.items.forEach(item => {
+                const productElement = document.createElement("div");
+                productElement.className = "cart-item";
+                productElement.innerHTML = `
+                    <img src="${item.product.image}" alt="${item.product.model}">
+                    <h3>${item.product.model}</h3>
+                    <p>Brand: ${item.product.brand}</p>
+                    <p>Size: ${item.product.size}</p>
+                    <p>Season: ${item.product.season}</p>
+                    <p>Vehicle Type: ${item.product.vehicleType}</p>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: ${item.product.price} USD</p>
+                    <button onclick="removeFromCart('${item.product._id}')">Remove</button>
+                `;
+                cartList.appendChild(productElement);
+                total += item.product.price * item.quantity;
+            });
+
+            document.getElementById("total-price").textContent = `Total: ${total} USD`;
+        } else {
+            document.getElementById("message").textContent = data.message;
+            document.getElementById("message").className = "error";
+        }
+    } catch (error) {
+        console.error("Error loading cart:", error);
+        document.getElementById("message").textContent = "Error loading cart.";
         document.getElementById("message").className = "error";
-      }
-    } catch (error) {
-      document.getElementById("message").textContent = "Error loading cart.";
-      document.getElementById("message").className = "error";
     }
-  };
-  
-  // **Функция для удаления товара из корзины**
-  const removeFromCart = async (productId) => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/cart/${productId}`, {
-        method: "DELETE"
-      });
-  
-      if (res.ok) {
-        loadCart();
-      } else {
-        console.error("Error removing from cart");
-      }
-    } catch (error) {
-      console.error("Error removing from cart:", error);
-    }
-  };
-  
-  // Загрузка корзины при открытии страницы корзины
-  if (window.location.pathname === "/cart") {
+};
+
+// Загрузка корзины при открытии страницы корзины
+if (window.location.pathname === "/cart") {
     loadCart();
-  }
+}
