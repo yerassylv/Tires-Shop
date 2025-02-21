@@ -19,7 +19,7 @@ const generateTires = (count) => {
     const seasons = ['summer', 'winter', 'all-season'];
     const loadIndexes = [88, 91, 95, 100];
     const speedIndexes = ['H', 'V', 'W', 'Y'];
-    const vehicleTypes = ["passenger", "SUV", "commercial"]; // исправлено: "SUV" вместо "suv"
+    const vehicleTypes = ["passenger", "SUV", "commercial"];
     const descriptions = [
         "High-performance summer tire",
         "Winter tire with excellent grip on snow and ice",
@@ -37,12 +37,12 @@ const generateTires = (count) => {
             season: seasons[Math.floor(Math.random() * seasons.length)],
             loadIndex: loadIndexes[Math.floor(Math.random() * loadIndexes.length)],
             speedIndex: speedIndexes[Math.floor(Math.random() * speedIndexes.length)],
-            vehicleType: vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)], // Теперь корректно
-            studded: Math.random() > 0.7, // 30% шанс что шина будет шипованной
-            price: Math.floor(Math.random() * (400 - 100) + 100), // Цена от 100 до 400$
-            stock: Math.floor(Math.random() * (50 - 5) + 5), // Количество от 5 до 50
+            vehicleType: vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)],
+            studded: Math.random() > 0.7,
+            price: Math.floor(Math.random() * (400 - 100) + 100),
+            stock: Math.floor(Math.random() * (50 - 5) + 5),
             description: descriptions[Math.floor(Math.random() * descriptions.length)],
-            image: "", // Оставляем пустым, как ты просил
+            image: "",
             rating: 0,
             reviews: [],
             createdAt: new Date()
@@ -54,9 +54,6 @@ const generateTires = (count) => {
 // Загрузка данных в MongoDB
 const seedDatabase = async () => {
     try {
-        await Tire.deleteMany(); // Очистка базы перед записью
-        console.log('✅ Очистка базы выполнена');
-
         const tires = generateTires(50); // Генерируем 50 карточек
         await Tire.insertMany(tires);
         console.log('✅ 50 шин добавлены в базу');
