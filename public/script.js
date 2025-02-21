@@ -156,68 +156,16 @@ window.onclick = function(event) {
     }
 }
 
-// **Функция для загрузки каталога шин**
-const loadCatalog = async () => {
+const loadProducts = async () => {
     try {
         const res = await fetch(`${API_BASE_URL}/products`);
         const products = await res.json();
         const catalog = document.getElementById("catalog");
 
-        const widthFilter = document.getElementById("width");
-        const heightFilter = document.getElementById("height");
-        const diameterFilter = document.getElementById("diameter");
-        const seasonFilter = document.getElementById("season");
+        catalog.innerHTML = ""; // Очистка каталога перед добавлением новых продуктов
 
-        // Заполнение фильтров уникальными значениями
-        const widths = new Set();
-        const heights = new Set();
-        const diameters = new Set();
-
-        products.forEach(product => {
-            const [width, height, diameter] = product.size.split('/');
-            widths.add(width);
-            heights.add(height);
-            diameters.add(diameter);
-        });
-
-        widths.forEach(width => {
-            const option = document.createElement("option");
-            option.value = width;
-            option.textContent = width;
-            widthFilter.appendChild(option);
-        });
-
-        heights.forEach(height => {
-            const option = document.createElement("option");
-            option.value = height;
-            option.textContent = height;
-            heightFilter.appendChild(option);
-        });
-
-        diameters.forEach(diameter => {
-            const option = document.createElement("option");
-            option.value = diameter;
-            option.textContent = diameter;
-            diameterFilter.appendChild(option);
-        });
-
-        const filterProducts = () => {
-            const width = widthFilter.value;
-            const height = heightFilter.value;
-            const diameter = diameterFilter.value;
-            const season = seasonFilter.value;
-
-            const filteredProducts = products.filter(product => {
-                const [productWidth, productHeight, productDiameter] = product.size.split('/');
-                const matchesWidth = width === "all" || productWidth === width;
-                const matchesHeight = height === "all" || productHeight === height;
-                const matchesDiameter = diameter === "all" || productDiameter === diameter;
-                const matchesSeason = season === "all" || product.season === season;
-                return matchesWidth && matchesHeight && matchesDiameter && matchesSeason;
-            });
-
-            catalog.innerHTML = "";
-            filteredProducts.forEach(product => {
+        if (products.length > 0) {
+            products.forEach(product => {
                 const productElement = document.createElement("div");
                 productElement.className = "product";
                 productElement.innerHTML = `
@@ -229,20 +177,16 @@ const loadCatalog = async () => {
                 `;
                 catalog.appendChild(productElement);
             });
-        };
-
-        widthFilter.addEventListener("change", filterProducts);
-        heightFilter.addEventListener("change", filterProducts);
-        diameterFilter.addEventListener("change", filterProducts);
-        seasonFilter.addEventListener("change", filterProducts);
-
-        filterProducts();
+        } else {
+            document.getElementById("message").textContent = "No products found.";
+        }
     } catch (error) {
-        console.error("Error loading catalog:", error);
+        console.error("Error loading products:", error);
+        document.getElementById("message").textContent = "Error loading products.";
     }
 };
 
-// Загрузка каталога при открытии страницы шин
+// Загрузка продуктов при открытии страницы шин
 if (window.location.pathname === "/tires") {
-    loadCatalog();
+    loadProducts();
 }

@@ -1,5 +1,6 @@
 const Tire = require("../models/Tire");
 
+
 // Получение всех продуктов
 exports.getAllProducts = async (req, res) => {
   try {
