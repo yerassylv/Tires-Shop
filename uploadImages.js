@@ -1,78 +1,75 @@
-const mongoose = require('mongoose');
-const cloudinary = require('cloudinary').v2;
-const dotenv = require('dotenv');
-const Tire = require('./models/Tire');
-const fs = require('fs');
-const path = require('path');
+const mongoose = require("mongoose");
+const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
+const Restaurant = require("./models/Restaurant");
 
-dotenv.config(); 
+dotenv.config(); // Загружаем переменные окружения
 
+// Подключение к MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => console.log('✅ MongoDB подключен'))
-  .catch(err => console.log('❌ Ошибка подключения к MongoDB:', err));
+}).then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.log("❌ Connection error:", err));
 
+// Настройки Cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Бренды и соответствующие файлы изображений
-const brands = ['Michelin', 'Pirelli', 'Goodyear', 'Bridgestone', 'Continental', 'Yokohama'];
-const imagePathMap = {}; // Здесь будут храниться URL загруженных картинок
+// Список файлов изображений (замени своими путями)
+const images = {
+    "The Gourmet Spot": "public/images/gourmet.jpg",
+    "Ocean Breeze": "public/images/ocean.jpg",
+    "Golden Fork": "public/images/fork.jpg",
+    "Steakhouse Deluxe": "public/images/steakhouse.jpg",
+    "Pasta Paradise": "public/images/pasta.jpg",
+    "Sushi Time": "public/images/sushi.jpg",
+    "Spicy Grill": "public/images/grill.jpg",
+    "The French Corner": "public/images/french.jpg",
+    "Burger Haven": "public/images/burger.jpg",
+    "Vegan Delight": "public/images/vegan.jpg"
+};
 
 // Функция загрузки изображения в Cloudinary
-async function uploadToCloudinary(imagePath, brand) {
+async function uploadToCloudinary(imagePath, restaurantName) {
     try {
         const result = await cloudinary.uploader.upload(imagePath, {
-            folder: "tirex_tires",
-            public_id: `tirex_${brand.toLowerCase()}`
+            folder: "restback_restaurants",
+            public_id: restaurantName.toLowerCase().replace(/ /g, "_")
         });
         return result.secure_url;
     } catch (error) {
-        console.error(`❌ Ошибка загрузки ${brand} в Cloudinary:`, error);
+        console.error(`❌ Error uploading ${restaurantName} image:`, error);
         return null;
     }
 }
 
-// Функция загрузки всех изображений из папки и обновления MongoDB
-async function uploadImagesForBrands(folderPath) {
+// Функция загрузки всех изображений и обновления MongoDB
+async function uploadImagesForRestaurants() {
     try {
-        for (const brand of brands) {
-            const imagePath = path.join(folderPath, `${brand}.jpg`); // Файл должен называться по имени бренда
-
-            if (!fs.existsSync(imagePath)) {
-                console.log(`⚠ Изображение для бренда ${brand} не найдено (${imagePath})`);
-                continue;
-            }
-
-            console.log(`📤 Загружаем изображение для ${brand}...`);
-            const imageUrl = await uploadToCloudinary(imagePath, brand);
-            
-            if (imageUrl) {
-                imagePathMap[brand] = imageUrl; // Сохраняем URL в объект
-                console.log(`✅ Изображение для ${brand} загружено: ${imageUrl}`);
-
-                // Обновляем ВСЕ шины этого бренда в MongoDB
-                const result = await Tire.updateMany(
-                    { brand: brand, image: "" }, // Обновляем только шины без картинки
-                    { image: imageUrl }
-                );
-
-                console.log(`🔄 Обновлено шин ${brand}: ${result.modifiedCount}`);
+        const restaurants = await Restaurant.find();
+        for (const restaurant of restaurants) {
+            if (images[restaurant.name]) {
+                console.log(`📤 Uploading image for ${restaurant.name}...`);
+                const imageUrl = await uploadToCloudinary(images[restaurant.name], restaurant.name);
+                if (imageUrl) {
+                    await Restaurant.updateOne({ _id: restaurant._id }, { image: imageUrl });
+                    console.log(`✅ Image updated for ${restaurant.name}`);
+                }
+            } else {
+                console.log(`⚠ No image found for ${restaurant.name}`);
             }
         }
-
-        console.log("🎉 Все изображения загружены и обновлены в MongoDB!");
+        console.log("🎉 All images uploaded and updated in MongoDB!");
         mongoose.connection.close();
     } catch (error) {
-        console.error("❌ Ошибка обработки:", error);
+        console.error("❌ Error processing images:", error);
         mongoose.connection.close();
     }
 }
 
 // Запуск загрузки изображений
-const folderPath = path.join(__dirname, 'public/images/tires');
-uploadImagesForBrands(folderPath);
+uploadImagesForRestaurants();
